@@ -1,0 +1,126 @@
+hanit1992
+
+
+
+=============================
+=      File description     =
+=============================
+AvlTree.java - the main class of the program.
+
+=============================
+=          Design           =
+=============================
+i decided to create a main class - AvlTree, and used 2 nested class inside it -
+the class 'TreeNode' who holds the tree nodes objects, and the inner class 'AvlIterator' -
+who is implemented inside the iterator main class method.
+
+i chose to do so, because of the connection i found between the classes - the purpose of the TreeNode class is to hold
+the objects that the only class who uses them is AvlTree. i thought that by creating a nested class, i would be able to
+reserve the privacy, and to get the immediate required data members of the nested class, with out the need to use
+getters or to change the API. i could have done it in a seperated file, but i thought it would be clear and logical
+to make it as a nested class.
+
+i thought the connection between the iterator method and the AvlIterator class is natural. the iterator method will
+return an AvlIterator object. this method is actually the whole purpose of the class - it's being created in order to
+provide object who will specifically iterate over the Avl Tree. so i chose to make it an inner class -
+a class inside the method, who is being used only by the method itself, by returning the class object.
+
+in addition, the class AvlTree implements the Iterable interface - as a natural choice for the fact that i created an
+iteration method, which makes the class's objects iterable by definition.
+because i was asked to create an iterator the is Iterator<Integer> (java class object), the inner class of the method
+iterator, implements Iterator<Interger>. (note that if i haven't done so, i would have change the given API).
+
+the AvlTree class main methods are those who are included in the API. notice that those methods have helper methods,
+who will be describe extensively in the next section af the README file.
+
+=============================
+=  Implementation details   =
+=============================
+implementation of 'add()':
+the method general workflow will be as follows:
+first I check if the root is null. if it is, i'm adding the value and returning.
+if it's not null, we are creating a new node and placing it recursively in the tree, by calling the 'recursiveAdd'
+function.
+after we added the node, if it wasn't already in there, as we check in the recursive add function, we are updating the
+list of values, than calling the 'updatingTree' function (to update all the heights and balances of the nodes in the
+tree, and fix violations as needed) and then updating the number of nodes that are in the tree currently, and returning
+true (meaning the value was added).
+
+implementation of 'delete()':
+the method general workflow will be as follows:
+we first calling the function 'recursiveSearchForAGivenValue' which finds the requested node by it's given value,
+and returning the founded node. if it doesn't exists in the tree, it returns null.
+if it's not null, we are calling another helper method 'recursiveDeleteByCases' who takes care of the deletion according
+to the specific case.
+then we are removing the node from the values class list, and than calling 'updatingTree' to update the tree after the
+deletion. finally, reducing the number of nodes in the tree accordingly.
+
+using of helper methods:
+the following methods were used for both implementations:
+'updatingTree' and accordingly, all the functions who are related to the height changes, balance changes, and the
+'reservingAvlProperty' function, who is in charge for fixing violations.
+those are the methods who are being used seperately by the two methods:
+the function 'recursiveSearchForAGivenValue' returns the value who needs to be deleted. i decided that only the
+'delete()' method and the 'Contains()' method will use it due to the return value. i preferred to make a different
+function for the add() method, who will add the value immediatly when it reaches a null place and didn't find it in
+the tree before.
+the function 'recursiveDeleteByCases' is taking care of the spacial case of deleting value from an Avl tree, in which
+some different factors needs to be considered.
+to summerise my choices - all the methods connect to updating and fixing violations are common, else - seperate.
+
+note - the FindMinNodes method has 3 base cases, in order to make it easier and faster to get a value recursively
+and return. the thing is, that i could calculate conviniently those small cases, so i decided to create a few base
+cases. those were chosen due to convinience of calculation.
+
+=============================
+=    Answers to questions   =
+=============================
+- Answers to section 5 questions -
+
+ - 5.1 -
+I first realised that the inserting order of the values in the example tree was in fact the increasing sorted order
+of the values. from their, i expanding the tree in a way that would not create any violations until i managed to add
+a level and keep the tree balanced.
+the founded values insertion order will be:
+2,4,6,8,10,12,14,5,1,9,13,15
+
+ - 5.2 -
+a. the asymptotic running time of the data constructor, means the asymptotic running time to insert n elements (given
+that the data list has n elements).
+in this case, the running time is O(nlog(n)). note that for each insertion, we go through all the existing nodes in the
+tree, which for each time will be the height of the current tree. the maximum height for an Avl tree is log(n), so for
+n nodes we will make nlog(n) steps. for each insertion we will run up to update all the nodes by the new height and
+balance, and will fix violations if needed, so that's another log(n) steps, since we always start with an Avl valid tree.
+so for all, we have O(nlog(n)) running time complexity for inserting n elements to an Avl tree.
+
+b. (bonus question): the best case will be - O(log(n)), and that would be for a given data,
+who her immidiate insertion would not create any violations. that way, we would not make for n elements additional O(1)
+steps to fix violations, and for each insertion we will go h steps, when h is the height of the current tree. notice
+that it would indeed be the minimal case (for the tree height) because -
+in an Avl tree, the height is always log(n), maximum and minimum, and the balance factor can't be larger than
+one in absolute value. so if the height of a whole tree with n nodes is log(n), one of the root sub trees will be
+log(n) -1, and the other can't be les than log(n)-2. so we can notice
+that when adding a new element and reaching some leaf to inserting it as his son, we can't go through a tree that his
+height is less than log(n)-2, and in other words - 'teta' of log(n). recall the insertion process we discribed in a. -
+we will always make operations according to the tree height, so even in the best case of an avl tree, we have a minimum
+height which is asymptoticly log(n).
+so finally, we will have n nodes in the tree, so the height would be log(n), which will be the maximal operations we
+will do to insert the final node. so in this case, we will have O(log(n)) operations total.
+
+ -5.3-
+a. given a tree with n nodes that needs to be copied, the approximate time for building it will be similar to adding
+n values to a new Avl tree, which is, as similar to the last question (a) 'teta'(nlog(n))
+
+b. notice that in this case we are getting an avl tree. that means that we can take it's values in some random order
+(for example if the avl tree class holds the list of the values), but we can also turn to the class iterator and get
+a sorted list of the nodes. so, in that case we can build the tree in n steps - so that would be 'teta' (n) steps.
+
+-5.4-
+a. we have a recursive function, and it's recursive formula would be:
+T(h) = T(h-1) + T(h-2) + 1.
+if we develop it, we will get that eventually when getting to the base case, we had maximum h operations, so the sum of
+then all would be the running time of O(h), which is for an Avl tree - O(log(n)).
+
+b.this would be the best case for implementing this method.
+
+

@@ -1,0 +1,103 @@
+hanit1992
+
+
+
+=============================
+=      File description     =
+=============================
+
+- filesprocessing package -
+DirectoryProcessor.java - tha main class of the project. receives arguments from command line
+Parser.java - interpreting the given directories from command line
+Section.java - each Section object of the processor
+CaseTwoException.java - type two exception class
+CaseOneException.java - type One exception class
+
+- filter package -
+Filter.java - the Filter objects of the processor
+FilterFactory.java - the factory class that creates the Filter objects for each section of the processor
+
+- order package -
+Order.java - the Order objects of the processor
+OrderFactory.java - the factory that creates the Order objects for each section of the processor
+
+=============================
+=          Design           =
+=============================
+in this project i decided to implement the program by using 3 separate packages - one takes care of the main classes
+and common for all the objects in the program, one 'Filter' package, and one Order package.
+the first class the will make the connection between the received information to activating the program accordingly,
+will be the parser class.due to the fact i would have no interest in producing object from this class, and only
+use it's functionality for order and convenience, i decided to make it abstract.
+from there, the information will be translated and pass to the objects production.
+
+i decided to have a different class for each object in the program - for each section of the command file, for each
+order requested and for each filter request. it seems to e natural that each section object will hold a filter object
+and an order object, due to the fact that originally in the command file, each section is made of both of them.
+this design allows me to activate the singleton principle of a single appearance of the order and the filter objects
+in each section, due to the fact that they appears once for each section in the original file.
+
+the filter class implements the predicate functional interface, in order to allow me to shortly use lambda
+expressions for the implementation of the single method that separates on kind of filter from another. i chose
+the predicate class for it's main goal that matches the filter request - it returns whether a given object
+match to some condition or not - and that is exactly what the filter is doing - test whether a file object
+answer to the conditions, that were provided by the user of the program.
+each filter will be created according to this request, and the difference will show through the 'test' abstract method
+of predicate, that through the factory class of the object will be implemented differently, using
+condition statements and lambda expression.
+
+for the creation of the objects, i decided to implement the factory design pattern, that will be incharge
+of creating the objects and provide them to the section while creating all the section objects in the main class.
+both factories will be abstract.
+
+practically, the class will hold a predicate object and will return it's test method result as the return value of
+the 'test' function of the class. that way, each predicate can be created differently, and the filter object that it
+will be his data member will get the unique functionality of the given predicate object.
+
+the order class implements the Comparator java interface, and the class will override the compare method, by
+holding a comparator object that will be created in the factory and will be a given value while creating the order
+object by the factory. the design will be similar to the design of the filter class.
+
+the design of the exceptions hierarchy i used in order to handle errors, is by creating two types of exceptions and
+defining two new classes for them. each class holds a different kind of exception - one is the kind that warns the
+user and continue with the program afterwards, two is the type who inform an error and return without continuing.
+for the second kind, i decided to throw most of the exceptions while relevant, and catch them in the main method.
+for the first kind, my strategy was like that -  i created functions for checking values validity, each for other few
+kinds of potential warnings. in the method i'm interested to continue differently if the error occurs, i'm catching it
+by calling there to the value checking functions.
+i decided to choose this design, because it seemed fit to me, by the definition of the two different kind of exceptions
+- i knew that one kind will be thrown and leave the program in the middle, and the other will have to continue from the
+same spot, but will still have to be affected by the current yielded warning.
+i decided to put the two exception classes in the main folder, because i couldn't connect each of them to some other
+specific object.
+
+=============================
+=  Implementation details   =
+=============================
+- for the implementation of all the interfaces i used lambda expressions - a java syntax that shortly created the
+interface kind of object i wished to create. due to the fact that there were many options for creating them, i decided
+that a short way to implement it will be useful.
+
+- for the implementation of the exceptions system, and specifically for printing the warnings right before the matched
+files printings, i decided to keep for each class an array, that will collect the warnings that needs to be printed.
+the factories will hold a static lists, that while each warning occurs, the message of the object will be added to the
+list. the order will be as the order of they occurrence due to this fact.
+both objects will collect the values from their factories lists, and the section will hold a final list to grab all the
+warnings, and will be printed directly from there by the main method while the printing occurs.
+
+other notes for implementation -
+- when i used a lambda exception while returning an existing function of other class, i used method reference, in order to
+save the connection for a specific object to call the method on.
+- when i wanted to create a filter that will take all the objects (the default case or the "all" case), i called the
+method 'is file' which i knew that will always be true, due to the fact that all the files that are being sent there
+were checked before in the main class.
+
+=============================
+=    Answers to questions   =
+=============================
+
+for the sorting of the matched files, i decided to implement a comparator object, that the sort function of
+collections by java can use. the sort function can get an comparator object and by the implementation
+of the compare method of this comparator, will sort the files.
+in case of two equal files, compering to the specific requested order, i first sorted by name, and than sorted by the
+requested order, to make sure the the equal files will be printed alphabetically.

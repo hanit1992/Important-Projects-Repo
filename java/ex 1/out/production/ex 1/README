@@ -1,0 +1,55 @@
+hanit1992
+
+
+
+=============================
+=      File description     =
+=============================
+Competition.java - contains the class Competition, representing a single competition between two players.
+Move.java - contains the class Move, representing a single move in the game.
+Board.java - contains the class Board, representing the game board.
+Player.java - contains the class Player, representing each player of the game.
+
+
+=============================
+=          Design           =
+=============================
+the main design was given by the course instructions for this assigment, meaning that the choosing of the four main
+classes was already given. even so, i decided to add several more private methods in the Player class, and an
+additional data member in the Competition class:
+i chose to add a Board object as a field for each competition, because it sounds pretty natural and logical to me
+that each competition will have a board of itself.
+i chose to add 3 more methods to the player class, because they all were very useful for my implementation of the
+players moves functions. as for the matter of design, i thought that for some, the code will be too long and unreadable
+if i would just put everything inside the given methods. and for some, it was more than that - some additional methods
+were useful for several other. for example - i created an additional method who performs moves by order - and used it
+both in the random implementation and the smart implementation.
+
+=============================
+=  Implementation details   =
+=============================
+in the implementation of the random player, i decided to create random moves, and to limit the creation of those
+when the board has a strong majority of marked sticks. the reason was that i notice that in some point it takes a lot
+of time to the computer to mark randomly a valid target. so in order to speed up the process for the sake of the game,
+and because the random player was still performing a big amount of random moves before, i decided to implement this as
+so, and to create the method who return moves by the ordered position.
+
+in the implementation of the smart player, my strategy was as follows:
+i tried to think about this from the smaller problem to the bigger one (recursively) - i first thought about a situation
+when i can always win, regardless the choosing of the other player -  i can always win when there is an even number of
+isolated sticks (an unmarked stick and in both sides marked sticks or non sticks),only those sticks are unmarked,
+and this is my turn - in that way i will have to choose isolated one and only one, the other player also would, i would
+choose again - and the last one will have to be taking by the other player (always true for even).
+accordingly, i thought that i always want to reach this situation. than, i thought about a situation when i have a
+sequence and some number of isolated sticks - i realized that in this situation i can always win also - i will isolate
+the sequence if the number of the isolated on the board is even, i will take all the sequence if the number is odd.
+and than - i tried to think of how i can always get to a situation of an one sequence and other
+isolated: each time i will isolate some sequence on the board. that way, from a board of n sequences, i created a
+board of n-1 sequences. eventually, i would have good chances to get to a situation of an one sequence and other
+isolated - and than i will know for sure how to win.
+so according to this strategy, i created a method who counts the isolated sticks, a method who counts the number of
+sequences and a method who produces a move of isolating sequence - or taking all the sequence. the smart move method
+uses those methods and producing those moves according to the current board state, as explained above.
+
+another remark - by creating one method to isolate sequence and taking all sequence, i avoided a series code
+duplication, and i used a boolean varluable to mark the difference of the requested execution in each case.

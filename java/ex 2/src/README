@@ -1,0 +1,61 @@
+hanit1992
+
+
+
+=============================
+=      File description     =
+=============================
+SpaceShip.java - An abstract class of all the SpaceShip types.
+SpaceShipFactory.java - A class in charge on producing the ships objects of the game.
+Human.java - sub class of SpaceShip, representing the Human controlled ship.
+Runner.java - sub class of SpaceShip, representing the Runner ship type.
+Drunkard.java - sub class of SpaceShip, representing the Drunkard ship type.
+Aggressive.java - sub class of SpaceShip, representing the Aggressive ship type.
+Spacial.java - sub class of SpaceShip, representing the Spacial ship type.
+Basher.java - sub class of SpaceShip, representing the Basher ship type.
+
+
+=============================
+=          Design           =
+=============================
+when i chose the design for this program, i first thought of the players in this game - meaning - who are the
+objects taking part of the game functionality, what are they in charge of, and mostly - what things do they have in common,
+what things they don't.
+with this thought i chose to build different classes for each type of ship, due to the fact that they behave diffrerntly
+from each other. but i chose to make them sub classes of the same class, who will be in charge of all the ships,
+due to the fact that they do have some behaver in common, and i wanted to avoid code duplicating.
+because each of the ships has a specific class, and only inherits the attributes of the main one, i chose to make it
+an abstract class (no need to create object from the main class type, and a bit confusing and "un real").
+i built most of the functions in the main class, due to the fact they regarding all of the ships, while a single method
+who contained the spacial actions for each of the ships was defined abstract, and was implemented in each of the ship
+typed class. (i splitted the given function and created another one, because the doAction method is incharge on the
+actions who taking place every round, but not all of those actions are uniqe for the ship types.
+advantages and disadvantages-
+- Extensibility - there is the advantage of extensibility with this design. when i would like to add something for all the
+i will have to add this only once, and all the sub classes will inherit this, while they will reserve their unique
+behaver. in the same way, i could add something specific for a class without changing the others.
+- Modularity - the design i chose was modular, due to the face that i chose to make different classes to each of the
+types, and this would not be up to the other classes. hence, i have a system with small components who compose the big
+program. naturally, their interaction will be via the API. (notice that a private method would not be acceseble to the
+classes who inherits from the same class, so the comunication will have to be via public methods or protected ones. i
+chose most of them to be public, because they are being used via other not inherited classes.
+- Intuitiveness and understandability - i believe that the design itself is easy to understand, because it is logical -
+the polimorfisem of the object may be confusing while reading the code itself,but as a concept it's pretty natural.
+– Representation of the classes and their relationships - i think that this part reflects a huge advantage my design
+has: my choices of the classes were almost according to objects in real life.
+
+=============================
+=  Implementation details   =
+=============================
+-drunkard class implementation - the class overrides the abstract method of SpaceShip class, by a method who dictated
+the unique behavor of the drunkard ship. the drunkard will always accelerate, but also always turn in circles, and will
+do it a number of times in a loop. this number is being chosen randomly by using java's random object. in that way, it
+creates a fast, crazy and unexpected ship.
+-spacial class implementation - the class overrides the abstract method of SpaceShip class, by a method who dictated
+the unique behavor of the spacial ship. the spacial ship will choose, in each game, another ship in the game.
+the ship will be chosen randomly. from then,during the whole game, it will try to hurt only that ship, will shoot it
+constantly and chase after her position.
+if the spacial ship is the only one in the game, or the game has only spacial ships - it will move regularly.
+the implementation of choosing another ship that is in the same game, requierd using the ship factory class. i wanted
+to choose this ship once in a game, and not through the loop that activates the ship cations each round,
+so i chose to choose the ship in the beggining, a little after i create the spacial ship itself.

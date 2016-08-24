@@ -1,0 +1,140 @@
+hanit1992
+
+
+
+=============================
+=      File description     =
+=============================
+OpenHashSet.java - a class represents the Open hash set data structure.
+ClosedHashSet.java - a class represents the Closed hash set data structure.
+SimpleHashSetPerformanceAnalyzer.java - the class in order to execute tests of the different structures.
+LinkedListWrapper.java - wraps the java's linked list for OpenHashSet to use.
+CollectionFacadeSet.java - implements the SimpleSet interface for java's data structures.
+SimpleSet.java - the interface to implement by OpenHashSet,ClosedHashSet and the facade class.
+
+=============================
+=          Design           =
+=============================
+most of the design in this exercise was chosen by the school, but i maid the following decisions for the design:
+-i decided to make SimpleHashSet an abstract class, and to implement the add and contain methods in the inherited
+classes. this decision was maid because of the difference in the implementation of the closed structure and the open
+structure, specificely considering the 'contain' and 'add' and 'delete' methods.
+-i decided to implement the linked list that OpenHashSet is using with, by a wrapping class called 'LinkedListWrapper'.
+this class holds all the methods which will be used by the OpenHashSet class linked list. it supports the methods
+add,contain,delete and creating an iterator. because this class will create a new object (link list) in Open set
+class only when a new value needs to be added to the array, i decided that the constructor will imediatly call
+the class's add function with a given string value.
+
+=============================
+=  Implementation details   =
+=============================
+-OpenHashSet table - i decided to implement the table according to the main idea of the open set - by link lists which
+will be in each cell of the main array. the array will be a regular java array, who will hold objects of the wrapping
+class LinkedListWrapper (as described in the design section). when a new string needs to be added to the set, and in
+it's index spot is null, a new linked list wrapper object will be created, by calling the wrapper class and from than on
+calling the class's methods in order to control the lists objects.
+-ClosedHashSet deletion - i decided to implement the deletion as follows:
+ in the constructor, i created a new String object, that will be construct from some 'deleted string' i decided on.
+ whenever i erase a string from a cell in the table, i'm setting instead the deleted string value. that way,
+ in the contains method, i distinguish between the reference equality and the contant equality:
+ because i created a new String Object, and set the empty cell to this string, i created a cell that is connected by
+ reference to this Object String. i'm asking, than, a the contain method, if the cell points to this string, meanning -
+ does this cell has thr reference of the String? i'm using the "==" that checks the reference equality.
+ to distinguish this string or just a similar string who is taking regular place in this table, i'm checking for
+ a contant  equality - by "equals()" method, and in that way i can tell when is this cell is pointing to the erased
+ string, and when this cell in the string itself.
+ in this way, in the contain method, i can go through all the list, and keep going if the cell in anything but null
+ (if has a value, or marked as erased) and stop whenever reaches null. in the add method, i will check if a cell is
+ null or if it's marked as erased, and will fill it accordingly.
+
+=============================
+=    Answers to questions   =
+=============================
+- Analyze results -
+#time for initialising data structure with data 1:
+<HashSet -117>
+TreeSet-124
+OpenHashSet-57326
+LinkedList-54702
+ClosedHashSet-217025
+#time for initialising data structure with data 2:
+<HashSet - 19>
+TreeSet - 50
+OpenHashSet - 69
+ClosedHashSet - 26
+LinkedList - 33365
+#time for initialising data 1 comparing to data 2:
+HashSet: data1 - 117 , data2 - 19
+TreeSet: data1 - 124 , data2 - 50
+OpenHashSet: data1 - 57326 , data2 - 69
+ClosedHashSet: data1 - 217025 , data2 - 26
+LinkedList: data1 - 217025 , data2 - 33365
+#time for searching "hi" in the structures initialized with data1:
+<OpenHashSet - 29>
+HashSet - 90
+TreeSet - 140
+ClosedHashSet - 28
+LinkedList - 969292
+#time for searching “-13170890158” in the structures initialized with data1:
+<HashSet - 26>
+TreeSet - 197
+LinkedList - 1022502
+OpenHashSet - 1066180
+ClosedHashSet - 2985566
+#for structures initialized with data1, time for searching "hi" as opposed to searching “-13170890158”:
+HashSet: "hi" - 90, “-13170890158” - 26
+TreeSet: "hi" - 140, “-13170890158” - 197
+OpenHashSet: "hi" - 29, “-13170890158” - 1066180
+ClosedHashSet: "hi" - 28, “-13170890158” - 2985566
+LinkedList: "hi" - 969292, “-13170890158” - 1022502
+#time for searching "hi" in the structures initialized with data2:
+<HashSet - 8>
+TreeSet - 87
+LinkedList - 862589
+OpenHashSet - 17
+ClosedHashSet - 37
+#time for searching "23" in the structures initialized with data2:
+<ClosedHashSet - 36>
+OpenHashSet - 41
+HashSet - 52
+TreeSet - 56
+LinkedList - 409
+#for structures initialized with data1, time for searching "hi" as opposed to searching “23”:
+HashSet: "hi" - 8, “23” - 52
+TreeSet: "hi" - 87, “23” - 56
+OpenHashSet: "hi" - 17, “23” - 41
+ClosedHashSet: "hi" - 37, “23” - 36
+LinkedList: "hi" - 862589, “23” - 409
+-discussing the analyse results-
+#the bad results are:
+-OpenHashSet: initializing data1, contains of the negative number in data1.
+-CloseHashSet: initializing data1, contains of the negative number in data1.
+#-OpenHashSet:
+  strengths: adding new data when the data doesn't have the same hash, finding a positive int.
+  weaknesses: adding new data when the data have the same hash, finding a long negative int.
+ -ClosedHashSet:
+  strengths: finding a positive int in a list not with the same hash, adding new data when the data doesn't
+  have the same hash
+  weaknesses: adding new data when the data have the same hash, searching for a big negative number
+  when the hash is the same.
+ -HashSet:
+  strengths: adding new data from any kind, searching for a negative large int, searching for values in general.
+  weaknesses: took a little more to find something when all the words go to the same hash.
+ -TreeSet:
+  strengths: adding new data from any kind.
+  weaknesses: comparing to hash set, takes a little more to search for values, but the difference is not that big.
+ -LinkedList:
+  strengths: finding a short int
+  weaknesses: everything else... really slow in adding data, searching particularly.
+ in order to add data i would choose java's Hash set, and i would choose it in order to do everything else. it has a
+ keen strength in those checked fields.
+#it seems like the open hash is better. it has better performances in adding both data's, and it finds values faster,
+except for one specific one - and this just can be related to the specific spot of the data in the set.
+#java's Hash set was almost always better. in some contains operations the results of HashSet and the open hash were
+ pretty close, so i guess that when it comes to add values, java's hash is very efficient.
+#i wasn't surprised by the difference between the close set and the open when it comes to adding values. it was clair to
+me that the open structure can reach the matching places faster. i was surprised by how much the LinkedList was weak
+comparing the others.
+#i found it really surprising.i suspect that their probing function is much better, and also the hash function. it mostly
+seem like it finds spots in the set faster, so maybe it's even indicates that it holds liked lists like in our open set.
+#i didn't try it. i followed one function through all the exam.

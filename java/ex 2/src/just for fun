@@ -1,0 +1,14 @@
+ import java.awt.image.BufferedImage;
+ import java.io.File;
+ import java.io.IOException;
+ import java.awt.Image;
+ import javax.imageio.ImageIO;
+
+  public void addMyPhoto(){
+        BufferedImage img = null;
+        try{
+            img= ImageIO.read(new File("C:\\Users\\חנית\\IdeaProjects\\ex 2\\src\\1326453714_tiara.jpg"));
+        }
+        catch (IOException e){}
+        this.shipImage = img;
+    }

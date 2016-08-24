@@ -1,0 +1,29 @@
+hanit1992
+
+shaimaar melerz
+
+=============================
+=      File description     =
+=============================
+Book.java - contains the class Book, representing a book in the library
+Patron.java - contains the class Patron, representing a patron
+Library.java - contains the class Library, representing a library
+
+
+=============================
+=          Design           =
+=============================
+the main design of the program is a direct order instructed in the mission ex0 file,
+so there was not much design choice of the specific program.
+i can only say that i chose not to add any sub classes, because i found the constructed
+design satisfying and logical. i managed to use the given classes and methods and implement
+the assigment from them alone.
+
+
+=============================
+=  Implementation details   =
+=============================
+by implementing the methods of the requested classes, i tried to be as simple as possible,
+and to use as much as i could the other methods for a certain method who required exactly
+what they did. i gave readable variable names, who were a logical representation of the thing
+itself.
